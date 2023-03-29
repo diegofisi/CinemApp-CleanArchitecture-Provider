@@ -2,15 +2,23 @@ import 'package:clean_cinema/app/data/repository_implementation/authtentication_
 import 'package:clean_cinema/app/data/repository_implementation/connectivity_repository_impl.dart';
 import 'package:clean_cinema/app/domain/repositories/connectivity_repository.dart';
 import 'package:clean_cinema/app/my_app.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'app/data/services/remote/internet_checker.dart';
 import 'app/domain/repositories/authentication_repository.dart';
 
 void main() {
   runApp(
     Injector(
-      connectivityRepository: ConnectivityRepositoryImpl(),
-      authenticationRepository: AuthenticationRepositoryImpl(),
+      connectivityRepository: ConnectivityRepositoryImpl(
+        Connectivity(),
+        InternetChecker(),
+      ),
+      authenticationRepository: AuthenticationRepositoryImpl(
+        const FlutterSecureStorage(),
+      ),
       child: const MyApp(),
     ),
   );
